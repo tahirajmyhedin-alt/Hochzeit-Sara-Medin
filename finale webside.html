@@ -155,9 +155,9 @@ body{background:#1a1008;min-height:100vh;display:flex;align-items:center;justify
       </div>
 
       <p class="invite-phrase" id="phrase2">Ceremonia do të mbahet në</p>
-      <img class="venue-img" src="https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?w=800&q=80" alt="The Peninsula Hotel Istanbul">
-      <div class="venue-name">The Peninsula Hotel İstanbul</div>
-      <p class="venue-detail" id="phrase3">Ora 18:00 mbrëmjes</p>
+      <img class="venue-img" src="https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?w=800&q=80" alt="4 yjet e re">
+      <div class="venue-name">4 yjet e re</div>
+      <p class="venue-detail" id="phrase3">Ora 19:00 mbrëmjes</p>
 
       <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
 
@@ -176,7 +176,7 @@ body{background:#1a1008;min-height:100vh;display:flex;align-items:center;justify
       <div class="map-section">
         <div class="sec-label" id="loc-label">Vendndodhja</div>
         <div class="map-img-wrap" onclick="openMaps()">
-          <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&q=80" alt="Istanbul">
+          <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&q=80" alt="Deçan">
           <div class="map-pin-overlay">
             <svg class="map-pin-svg" width="40" height="52" viewBox="0 0 40 52">
               <circle cx="20" cy="18" r="18" fill="#8a5a4a"/>
@@ -192,12 +192,21 @@ body{background:#1a1008;min-height:100vh;display:flex;align-items:center;justify
 
       <div style="width:100%">
         <div class="sec-label" id="photo-label">Ndajini Momentet Tuaja</div>
-        <div class="upload-area">
-          <input type="file" accept="image/*" capture="camera" multiple onchange="handlePhotos(event)">
-          <div class="upload-icon-wrap">📷</div>
-          <div class="upload-main" id="upload-main">Ngarkoni fotot tuaja</div>
-          <div class="upload-sub" id="upload-sub">Nga kamera ose galeria juaj</div>
-        </div>
+        <a href="https://www.dropbox.com/scl/fo/e6ffadueuf44thg453jfk/AK1dR7jJMmlVYr5sRmfqOKI?rlkey=vc8r8xq6ix8be6ufj3ss2q4q6&st=6w96669b&dl=0"
+			target="_blank"
+			class="upload-area"
+			style="text-decoration:none;color:inherit;display:block;">
+
+			<div class="upload-icon-wrap">📷</div>
+			<div class="upload-main">
+				Ngarkoni fotot tuaja
+			</div>
+			<div class="upload-sub">
+				Nga kamera ose galeria juaj
+			</div>
+
+		</a>
+			
         <div class="upload-ok" id="upload-ok">✓ Fotot tuaja u ndanë — faleminderit!</div>
         <div class="photo-grid" id="photo-grid"></div>
       </div>
@@ -307,7 +316,7 @@ function startCountdown(){
   tick();setInterval(tick,1000);
 }
 
-function openMaps(){window.open('https://maps.google.com/?q=Peninsula+Hotel+Istanbul','_blank')}
+function openMaps(){window.open('https://www.google.com/maps/place/4+yjet+e+re/@42.5321742,20.2918891,3232m/data=!3m1!1e3!4m6!3m5!1s0x135255df7f6b47ed:0x1cf481b3eeca2e1e!8m2!3d42.5251424!4d20.3014464!16s%2Fg%2F11t7dvs6_c?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D','_blank')}
 
 function handlePhotos(e){
   const files=Array.from(e.target.files);
