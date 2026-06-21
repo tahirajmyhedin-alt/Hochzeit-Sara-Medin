@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sara & Medin – Ftesë Dasme</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Cinzel:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1008;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+
+#phone{width:390px;min-height:844px;background:#f5f0e8;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 40px 120px rgba(0,0,0,0.7),0 0 0 10px #2a1a08,0 0 0 12px #4a3018;display:flex;flex-direction:column;align-items:center}
+.notch{width:130px;height:36px;background:#1a0e04;border-radius:0 0 22px 22px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:100}
+
+/* ENVELOPE */
+#env-scene{width:100%;height:844px;position:relative;cursor:pointer;overflow:hidden;flex-shrink:0}
+.env-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80');background-size:cover;background-position:center;filter:brightness(0.92) sepia(0.15)}
+.env-bg::after{content:'';position:absolute;inset:0;background:rgba(245,240,228,0.55)}
+.env-body{position:absolute;bottom:160px;left:50%;transform:translateX(-50%);width:280px;height:190px;background:linear-gradient(160deg,#f9f4ec,#ede5d4);border:1px solid #d4c5a9;box-shadow:0 20px 60px rgba(80,50,20,0.3),0 4px 12px rgba(0,0,0,0.1);border-radius:3px}
+.env-left-fold{position:absolute;bottom:0;left:0;width:0;height:0;border-top:95px solid transparent;border-bottom:95px solid transparent;border-left:140px solid rgba(200,180,150,0.35)}
+.env-right-fold{position:absolute;bottom:0;right:0;width:0;height:0;border-top:95px solid transparent;border-bottom:95px solid transparent;border-right:140px solid rgba(180,160,130,0.3)}
+.env-bottom-fold{position:absolute;bottom:0;left:0;width:0;height:0;border-left:140px solid transparent;border-right:140px solid transparent;border-bottom:90px solid rgba(190,170,140,0.4)}
+.env-flap{position:absolute;bottom:350px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:140px solid transparent;border-right:140px solid transparent;border-bottom:95px solid #e8dcc8;transform-origin:bottom center;transition:transform 0.9s cubic-bezier(.4,0,.2,1);z-index:5;filter:drop-shadow(0 -4px 8px rgba(0,0,0,0.1))}
+.env-flap.open{transform:translateX(-50%) rotateX(180deg)}
+.seal{position:absolute;bottom:315px;left:50%;transform:translateX(-50%);width:80px;height:80px;z-index:10;transition:transform 0.4s ease,opacity 0.4s ease}
+.seal img{width:100%;height:100%;border-radius:50%;object-fit:cover;box-shadow:0 4px 20px rgba(0,0,0,0.25);filter:sepia(.4) hue-rotate(60deg) saturate(.8)}
+.seal-overlay{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,0.3),transparent 60%);display:flex;align-items:center;justify-content:center}
+.seal-text{font-family:'Great Vibes',cursive;font-size:22px;color:rgba(255,255,255,0.9);text-shadow:0 1px 4px rgba(0,0,0,0.4)}
+.env-text{position:absolute;bottom:90px;width:100%;text-align:center;color:#5a7a4a;font-family:'Great Vibes',cursive;font-size:24px;line-height:1.6;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.tap-hint{position:absolute;bottom:52px;width:100%;text-align:center;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;color:#8a7a62;text-transform:uppercase;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.env-flowers-top{position:absolute;top:0;left:0;right:0;height:220px;background-image:url('https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80');background-size:cover;background-position:center bottom;mask-image:linear-gradient(to bottom,black 60%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 60%,transparent 100%)}
+
+/* INVITATION PAGE */
+#inv-page{display:none;width:100%;min-height:844px;flex-direction:column;align-items:stretch;animation:fadeUp 1s ease forwards;overflow-y:auto}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+#inv-page::-webkit-scrollbar{display:none}
+#inv-page{-ms-overflow-style:none;scrollbar-width:none}
+
+.flower-hero{width:100%;height:240px;position:relative;overflow:hidden;flex-shrink:0}
+.flower-hero img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.flower-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(245,240,232,0.6) 85%,#f5f0e8 100%)}
+
+.lang-toggle{position:absolute;top:44px;right:16px;display:flex;gap:4px;z-index:20}
+.lang-btn{background:rgba(255,255,255,0.85);border:1px solid #ccc;padding:3px 10px;font-size:10px;font-family:'Cinzel',serif;cursor:pointer;border-radius:2px;color:#555;letter-spacing:.05em}
+.lang-btn.active{background:#7a8a6a;color:white;border-color:#7a8a6a}
+
+.inv-content{background:#f5f0e8;padding:0 24px;display:flex;flex-direction:column;align-items:center}
+.monogram-wrap{margin-top:-30px;z-index:5;position:relative}
+.monogram-circle{width:72px;height:72px;background:rgba(245,240,232,0.9);border:1px solid #c8b89a;border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.monogram-letter{font-family:'Great Vibes',cursive;font-size:32px;color:#7a8a7a}
+.couple-names{font-family:'Great Vibes',cursive;font-size:52px;color:#6a7a6a;text-align:center;line-height:1.1;margin:8px 0 0}
+.divider{display:flex;align-items:center;gap:10px;width:100%;padding:10px 0}
+.div-line{flex:1;height:.5px;background:linear-gradient(90deg,transparent,#b0a090,transparent)}
+.div-diamond{width:6px;height:6px;background:#b0a090;transform:rotate(45deg);flex-shrink:0}
+.invite-phrase{font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:.18em;color:#7a7060;text-transform:uppercase;line-height:1.9;text-align:center}
+
+.date-box{border:.5px solid #c8b89a;padding:14px 30px;margin:10px 0;background:rgba(255,255,255,0.45);border-radius:2px;text-align:center;width:100%}
+.date-month{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.3em;color:#8a7a6a;text-transform:uppercase}
+.date-day{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:300;color:#4a5a4a;line-height:1}
+.date-week{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;color:#8a7a6a;text-transform:uppercase}
+.date-year{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;color:#8a7a6a;margin-top:4px}
+
+.venue-img{width:100%;height:160px;object-fit:cover;border-radius:2px;margin:10px 0;border:.5px solid #c8b89a;display:block}
+.venue-name{font-family:'Great Vibes',cursive;font-size:34px;color:#5a6a5a;text-align:center;line-height:1.2}
+.venue-detail{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;color:#7a7060;text-transform:uppercase;margin-top:4px;text-align:center}
+
+.cd-section{background:rgba(255,255,255,0.5);border:.5px solid #c8b89a;border-radius:2px;padding:16px;margin:12px 0;width:100%}
+.cd-title{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.25em;color:#8a7a6a;text-transform:uppercase;text-align:center;margin-bottom:12px}
+.cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cd-unit{text-align:center}
+.cd-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:#4a5a4a;line-height:1}
+.cd-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.18em;color:#8a7a6a;text-transform:uppercase;margin-top:2px}
+
+.map-section{width:100%;margin:4px 0}
+.sec-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.25em;color:#8a7a6a;text-transform:uppercase;text-align:center;margin-bottom:10px}
+.map-img-wrap{width:100%;height:155px;border-radius:2px;overflow:hidden;border:.5px solid #c8b89a;position:relative;cursor:pointer}
+.map-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.map-img-wrap:hover img{transform:scale(1.04)}
+.map-pin-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.map-pin-svg{filter:drop-shadow(0 3px 8px rgba(0,0,0,0.4))}
+.maps-btn{width:100%;padding:10px;background:rgba(90,80,70,.07);border:.5px solid #c8b89a;font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;color:#6a5a4a;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:8px;transition:background .2s}
+.maps-btn:hover{background:rgba(90,80,70,.16)}
+
+.upload-area{border:1px dashed #c8b89a;border-radius:2px;padding:22px 16px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.4);transition:background .2s;position:relative;width:100%;margin-top:2px}
+.upload-area:hover{background:rgba(255,255,255,.72)}
+.upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon-wrap{font-size:36px;margin-bottom:8px}
+.upload-main{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.15em;color:#7a6a5a;text-transform:uppercase}
+.upload-sub{font-family:'Cormorant Garamond',serif;font-size:14px;color:#9a8a7a;margin-top:4px;font-style:italic}
+.upload-ok{display:none;background:rgba(90,120,80,.1);border:.5px solid #a0b890;border-radius:2px;padding:8px 12px;margin-top:8px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:.15em;color:#5a7a4a;text-align:center;width:100%}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;width:100%}
+.photo-thumb{aspect-ratio:1;border-radius:2px;overflow:hidden;border:.5px solid #c8b89a}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+
+.rsvp-section{text-align:center;padding:10px 0 24px;width:100%}
+.rsvp-note{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.18em;color:#8a7a6a;text-transform:uppercase;margin-bottom:14px}
+.rsvp-btn{width:100%;padding:14px;background:linear-gradient(135deg,#7a8a6a,#5a7a5a);color:white;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.25em;text-transform:uppercase;border:none;cursor:pointer;border-radius:2px;transition:opacity .2s,transform .2s}
+.rsvp-btn:hover{opacity:.9;transform:translateY(-1px)}
+.footer-mono{text-align:center;padding:10px 0 28px;font-family:'Great Vibes',cursive;font-size:30px;color:#8a9a8a;opacity:.55}
+</style>
+</head>
+<body>
+
+<div id="phone">
+  <div class="notch"></div>
+
+  <!-- ENVELOPE SCENE -->
+  <div id="env-scene" onclick="openEnvelope()">
+    <div class="env-bg"></div>
+    <div class="env-flowers-top"></div>
+    <div class="env-body">
+      <div class="env-left-fold"></div>
+      <div class="env-right-fold"></div>
+      <div class="env-bottom-fold"></div>
+    </div>
+    <div class="seal" id="seal">
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200&q=80" alt="vulë dylli">
+      <div class="seal-overlay"><span class="seal-text">S&M</span></div>
+    </div>
+    <div class="env-flap" id="env-flap"></div>
+    <div class="env-text">Kemi nderin t'ju ftojmë<br>në gëzimin tonë</div>
+    <div class="tap-hint">Prekni për të hapur</div>
+  </div>
+
+  <!-- INVITATION PAGE -->
+  <div id="inv-page">
+    <div style="position:relative">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('sq')">SQ</button>
+        <button class="lang-btn" onclick="setLang('de')">DE</button>
+      </div>
+      <div class="flower-hero">
+        <img src="https://imgur.com/a/gqjP7O1" alt="hark lulesh">
+      </div>
+    </div>
+
+    <div class="inv-content">
+      <div class="monogram-wrap">
+        <div class="monogram-circle">
+          <span class="monogram-letter">S&M</span>
+        </div>
+      </div>
+
+      <div class="couple-names">Sara &amp; Medin</div>
+      <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+      <p class="invite-phrase" id="phrase1">Kemi nderin t'ju ftojmë<br>të festoni dasmën tonë më</p>
+
+      <div class="date-box">
+        <div class="date-month" id="month-l">Gusht</div>
+        <div class="date-day">02</div>
+        <div class="date-week" id="week-l">E Diel</div>
+        <div class="date-year">2026</div>
+      </div>
+
+      <p class="invite-phrase" id="phrase2">Ceremonia do të mbahet në</p>
+      <img class="venue-img" src="https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?w=800&q=80" alt="The Peninsula Hotel Istanbul">
+      <div class="venue-name">The Peninsula Hotel İstanbul</div>
+      <p class="venue-detail" id="phrase3">Ora 18:00 mbrëmjes</p>
+
+      <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+
+      <div class="cd-section">
+        <div class="cd-title" id="cd-title">Ditët po numërohen</div>
+        <div class="cd-grid">
+          <div class="cd-unit"><div class="cd-num" id="cd-d">--</div><div class="cd-label" id="cd-dl">Ditë</div></div>
+          <div class="cd-unit"><div class="cd-num" id="cd-h">--</div><div class="cd-label" id="cd-hl">Orë</div></div>
+          <div class="cd-unit"><div class="cd-num" id="cd-m">--</div><div class="cd-label" id="cd-ml">Min</div></div>
+          <div class="cd-unit"><div class="cd-num" id="cd-s">--</div><div class="cd-label" id="cd-sl">Sek</div></div>
+        </div>
+      </div>
+
+      <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+
+      <div class="map-section">
+        <div class="sec-label" id="loc-label">Vendndodhja</div>
+        <div class="map-img-wrap" onclick="openMaps()">
+          <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?w=800&q=80" alt="Istanbul">
+          <div class="map-pin-overlay">
+            <svg class="map-pin-svg" width="40" height="52" viewBox="0 0 40 52">
+              <circle cx="20" cy="18" r="18" fill="#8a5a4a"/>
+              <path d="M20 52 L5 22 Q20 36 35 22 Z" fill="#8a5a4a"/>
+              <circle cx="20" cy="18" r="8" fill="white"/>
+            </svg>
+          </div>
+        </div>
+        <button class="maps-btn" onclick="openMaps()" id="maps-btn">Hap në Harta ↗</button>
+      </div>
+
+      <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+
+      <div style="width:100%">
+        <div class="sec-label" id="photo-label">Ndajini Momentet Tuaja</div>
+        <div class="upload-area">
+          <input type="file" accept="image/*" capture="camera" multiple onchange="handlePhotos(event)">
+          <div class="upload-icon-wrap">📷</div>
+          <div class="upload-main" id="upload-main">Ngarkoni fotot tuaja</div>
+          <div class="upload-sub" id="upload-sub">Nga kamera ose galeria juaj</div>
+        </div>
+        <div class="upload-ok" id="upload-ok">✓ Fotot tuaja u ndanë — faleminderit!</div>
+        <div class="photo-grid" id="photo-grid"></div>
+      </div>
+
+      <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+
+      <div class="rsvp-section">
+        <div class="rsvp-note" id="rsvp-note">Ju lutemi konfirmoni deri më 1 Korrik 2026</div>
+        <button class="rsvp-btn" onclick="rsvpClick()" id="rsvp-btn">RSVP — Konfirmoni Pjesëmarrjen</button>
+      </div>
+
+      <div class="footer-mono">Sara &amp; Medin</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const tx={
+  sq:{
+    p1:"Kemi nderin t'ju ftojmë<br>të festoni dasmën tonë më",
+    p2:"Ceremonia do të mbahet në",
+    p3:"Ora 18:00 mbrëmjes",
+    month:"Gusht", week:"E Diel",
+    cdTitle:"Ditët po numërohen",
+    days:"Ditë", hours:"Orë", mins:"Min", secs:"Sek",
+    loc:"Vendndodhja", maps:"Hap në Harta ↗",
+    photo:"Ndajini Momentet Tuaja",
+    uMain:"Ngarkoni fotot tuaja", uSub:"Nga kamera ose galeria juaj",
+    uOk:"✓ Fotot tuaja u ndanë — faleminderit!",
+    rsvpNote:"Ju lutemi konfirmoni deri më 1 Korrik 2026",
+    rsvpBtn:"RSVP — Konfirmoni Pjesëmarrjen"
+  },
+  de:{
+    p1:"Wir bitten um die Ehre Ihrer Gesellschaft<br>zur Feier unserer Hochzeit am",
+    p2:"Veranstaltungsort",
+    p3:"Um 18 Uhr abends",
+    month:"August", week:"Sonntag",
+    cdTitle:"Die Tage zählen",
+    days:"Tage", hours:"Stunden", mins:"Min", secs:"Sek",
+    loc:"Standort", maps:"In Karten öffnen ↗",
+    photo:"Teilen Sie Ihre Momente",
+    uMain:"Fotos hochladen", uSub:"Von der Kamera oder Galerie",
+    uOk:"✓ Ihre Fotos wurden geteilt — danke!",
+    rsvpNote:"Bitte antworten bis 1. Juli 2026",
+    rsvpBtn:"RSVP — Anwesenheit bestätigen"
+  }
+};
+
+let lang='sq';
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent===l.toUpperCase()));
+  const t=tx[l];
+  document.getElementById('phrase1').innerHTML=t.p1;
+  document.getElementById('phrase2').textContent=t.p2;
+  document.getElementById('phrase3').textContent=t.p3;
+  document.getElementById('month-l').textContent=t.month;
+  document.getElementById('week-l').textContent=t.week;
+  document.getElementById('cd-title').textContent=t.cdTitle;
+  document.getElementById('cd-dl').textContent=t.days;
+  document.getElementById('cd-hl').textContent=t.hours;
+  document.getElementById('cd-ml').textContent=t.mins;
+  document.getElementById('cd-sl').textContent=t.secs;
+  document.getElementById('loc-label').textContent=t.loc;
+  document.getElementById('maps-btn').textContent=t.maps;
+  document.getElementById('photo-label').textContent=t.photo;
+  document.getElementById('upload-main').textContent=t.uMain;
+  document.getElementById('upload-sub').textContent=t.uSub;
+  document.getElementById('upload-ok').textContent=t.uOk;
+  document.getElementById('rsvp-note').textContent=t.rsvpNote;
+  document.getElementById('rsvp-btn').textContent=t.rsvpBtn;
+}
+
+let opened=false;
+function openEnvelope(){
+  if(opened)return;opened=true;
+  document.getElementById('env-flap').classList.add('open');
+  setTimeout(()=>{
+    const s=document.getElementById('seal');
+    s.style.transition='transform .5s ease,opacity .5s ease';
+    s.style.transform='translateX(-50%) scale(0) rotate(40deg)';
+    s.style.opacity='0';
+  },500);
+  setTimeout(()=>{
+    const sc=document.getElementById('env-scene');
+    sc.style.transition='opacity .8s ease,transform .8s ease';
+    sc.style.opacity='0';sc.style.transform='scale(0.92) translateY(30px)';
+  },1300);
+  setTimeout(()=>{
+    document.getElementById('env-scene').style.display='none';
+    const p=document.getElementById('inv-page');
+    p.style.display='flex';
+    startCountdown();
+  },2100);
+}
+
+function startCountdown(){
+  const target=new Date('2026-08-02T18:00:00');
+  function tick(){
+    const now=new Date();const diff=target-now;
+    if(diff<=0){['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0');return;}
+    document.getElementById('cd-d').textContent=Math.floor(diff/86400000);
+    document.getElementById('cd-h').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  }
+  tick();setInterval(tick,1000);
+}
+
+function openMaps(){window.open('https://maps.google.com/?q=Peninsula+Hotel+Istanbul','_blank')}
+
+function handlePhotos(e){
+  const files=Array.from(e.target.files);
+  if(!files.length)return;
+  const grid=document.getElementById('photo-grid');
+  grid.innerHTML='';
+  files.slice(0,9).forEach(f=>{
+    const r=new FileReader();
+    r.onload=ev=>{
+      const d=document.createElement('div');d.className='photo-thumb';
+      const img=document.createElement('img');img.src=ev.target.result;
+      d.appendChild(img);grid.appendChild(d);
+    };
+    r.readAsDataURL(f);
+  });
+  document.getElementById('upload-ok').style.display='block';
+}
+
+function rsvpClick(){
+  const b=document.getElementById('rsvp-btn');
+  b.textContent='✓ Faleminderit! Shihemi më 2 Gusht!';
+  b.style.background='linear-gradient(135deg,#7a9a6a,#4a8a4a)';
+  b.style.letterSpacing='.08em';
+}
+</script>
+</body>
+</html>
