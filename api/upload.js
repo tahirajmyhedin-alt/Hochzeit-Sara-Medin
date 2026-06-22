@@ -12,38 +12,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Neuen Access Token über Refresh Token holen
-   if (!process.env.DROPBOX_REFRESH_TOKEN) {
-  return res.status(500).json({
-    error: "DROPBOX_REFRESH_TOKEN fehlt in Vercel"
-  });
-}
-
-if (!process.env.DROPBOX_APP_KEY) {
-  return res.status(500).json({
-    error: "DROPBOX_APP_KEY fehlt in Vercel"
-  });
-}
-
-if (!process.env.DROPBOX_APP_SECRET) {
-  return res.status(500).json({
-    error: "DROPBOX_APP_SECRET fehlt in Vercel"
-  });
-}
-      "https://api.dropboxapi.com/oauth2/token",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-          grant_type: "refresh_token",
-          refresh_token: process.env.DROPBOX_REFRESH_TOKEN,
-          client_id: process.env.DROPBOX_APP_KEY,
-          client_secret: process.env.DROPBOX_APP_SECRET
-        })
-      }
-    );
+    const tokenResponse = await fetch("https://api.dropboxapi.com/oauth2/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: process.env.DROPBOX_REFRESH_TOKEN,
+        client_id: process.env.DROPBOX_APP_KEY,
+        client_secret: process.env.DROPBOX_APP_SECRET
+      })
+    });
 
     const tokenData = await tokenResponse.json();
 
@@ -61,43 +41,29 @@ if (!process.env.DROPBOX_APP_SECRET) {
     }
 
     const buffer = Buffer.concat(chunks);
+    const fileName = req.headers["x-file-name"] || `hochzeit-${Date.now()}.jpg`;
 
-    const fileName =
-      req.headers["x-file-name"] ||
-      `hochzeit-${Date.now()}.jpg`;
-
-    const uploadResponse = await fetch(
-      "https://content.dropboxapi.com/2/files/upload",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${tokenData.access_token}`,
-          "Content-Type": "application/octet-stream",
-          "Dropbox-API-Arg": JSON.stringify({
-            path: `/Hochzeitsbilder/${Date.now()}-${fileName}`,
-            mode: "add",
-            autorename: true
-          })
-        },
-        body: buffer
-      }
-    );
+    const uploadResponse = await fetch("https://content.dropboxapi.com/2/files/upload", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`,
+        "Content-Type": "application/octet-stream",
+        "Dropbox-API-Arg": JSON.stringify({
+          path: `/Hochzeitsbilder/${Date.now()}-${fileName}`,
+          mode: "add",
+          autorename: true
+        })
+      },
+      body: buffer
+    });
 
     if (!uploadResponse.ok) {
       const errorText = await uploadResponse.text();
-
-      return res.status(500).json({
-        error: errorText
-      });
+      return res.status(500).json({ error: errorText });
     }
 
-    return res.status(200).json({
-      success: true
-    });
-
+    return res.status(200).json({ success: true });
   } catch (err) {
-    return res.status(500).json({
-      error: err.message
-    });
+    return res.status(500).json({ error: err.message });
   }
 }
