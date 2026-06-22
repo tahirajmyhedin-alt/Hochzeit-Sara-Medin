@@ -249,20 +249,23 @@ body{
 
       <div style="width:100%">
         <div class="sec-label" id="photo-label">Ndajini Momentet Tuaja</div>
-        <a href="https://www.dropbox.com/scl/fo/e6ffadueuf44thg453jfk/AK1dR7jJMmlVYr5sRmfqOKI?rlkey=vc8r8xq6ix8be6ufj3ss2q4q6&st=6w96669b&dl=0"
-			target="_blank"
-			class="upload-area"
-			style="text-decoration:none;color:inherit;display:block;">
+		<label class="upload-area">
+  			<input
+  			  type="file"
+  			  accept="image/*"
+  			  capture="environment"
+ 			   multiple
+ 			   onchange="uploadPhotos(event)"
+			>
 
-			<div class="upload-icon-wrap">📷</div>
-			<div class="upload-main">
-				Ngarkoni fotot tuaja
-			</div>
-			<div class="upload-sub">
-				Nga kamera ose galeria juaj
-			</div>
-
-		</a>
+	 	 <div class="upload-icon-wrap">📷</div>
+	 	 <div class="upload-main" id="upload-main">
+		    Ngarkoni fotot tuaja
+		  </div>
+		  <div class="upload-sub" id="upload-sub">
+ 		   Nga kamera ose galeria juaj
+		  </div>
+	</label>
 			
         <div class="upload-ok" id="upload-ok">✓ Fotot tuaja u ndanë — faleminderit!</div>
         <div class="photo-grid" id="photo-grid"></div>
@@ -398,6 +401,43 @@ function rsvpClick(){
   b.style.background='linear-gradient(135deg,#7a9a6a,#4a8a4a)';
   b.style.letterSpacing='.08em';
 }
+async function uploadPhotos(event) {
+  const files = Array.from(event.target.files);
+  if (!files.length) return;
+
+  const ok = document.getElementById("upload-ok");
+  const grid = document.getElementById("photo-grid");
+  grid.innerHTML = "";
+
+  for (const file of files) {
+    const reader = new FileReader();
+
+    reader.onload = ev => {
+      const d = document.createElement("div");
+      d.className = "photo-thumb";
+
+      const img = document.createElement("img");
+      img.src = ev.target.result;
+
+      d.appendChild(img);
+      grid.appendChild(d);
+    };
+
+    reader.readAsDataURL(file);
+
+    await fetch("/api/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": file.type,
+        "x-file-name": file.name
+      },
+      body: file
+    });
+  }
+
+  ok.style.display = "block";
+}
+	
 </script>
 </body>
 </html>
