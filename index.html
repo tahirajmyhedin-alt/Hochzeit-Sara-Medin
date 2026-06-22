@@ -434,12 +434,14 @@ async function uploadPhotos(event) {
   		body: file
 	});
 
-	const result = await response.json();
+	const text = await response.text();
 
-	if (!response.ok) {
- 		 alert("Upload Fehler: " + JSON.stringify(result));
- 		 return;
-	}
+if (!response.ok) {
+  alert("Upload Fehler: " + text);
+  return;
+}
+
+const result = JSON.parse(text);
   }
   ok.style.display = "block";
 }
