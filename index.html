@@ -140,8 +140,22 @@ body{
 .maps-btn{width:100%;padding:10px;background:rgba(90,80,70,.07);border:.5px solid #c8b89a;font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;color:#6a5a4a;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:8px;transition:background .2s}
 .maps-btn:hover{background:rgba(90,80,70,.16)}
 
-.upload-area{border:1px dashed #c8b89a;border-radius:2px;padding:22px 16px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.4);transition:background .2s;position:relative;width:100%;margin-top:2px}
-.upload-area:hover{background:rgba(255,255,255,.72)}
+.upload-area{
+  border:none;
+  border-radius:2px;
+  padding:22px 16px;
+  text-align:center;
+  cursor:pointer;
+  background:transparent;
+  transition:background .2s;
+  position:relative;
+  width:100%;
+  margin-top:2px;
+  display:block;
+}
+.upload-area:hover{
+  background:rgba(255,255,255,.35);
+}
 .upload-area input{
   display:none;
 }
