@@ -425,7 +425,7 @@ async function uploadPhotos(event) {
 
     reader.readAsDataURL(file);
 
-	const response = await fetch("https://hochzeit-sara-medin-git-main-saramedin.vercel.app/api/upload", {
+	const response = await fetch("/api/upload", {
  		 method: "POST",
  		 headers: {
    		 "Content-Type": file.type,
