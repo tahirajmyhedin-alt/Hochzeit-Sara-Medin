@@ -12,6 +12,32 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Neuen Access Token über Refresh Token holen
+    const tokenResponse = await fetch(
+      "https://api.dropboxapi.com/oauth2/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          grant_type: "refresh_token",
+          refresh_token: process.env.DROPBOX_REFRESH_TOKEN,
+          client_id: process.env.DROPBOX_APP_KEY,
+          client_secret: process.env.DROPBOX_APP_SECRET
+        })
+      }
+    );
+
+    const tokenData = await tokenResponse.json();
+
+    if (!tokenData.access_token) {
+      return res.status(500).json({
+        error: "Token konnte nicht erneuert werden",
+        details: tokenData
+      });
+    }
+
     const chunks = [];
 
     for await (const chunk of req) {
@@ -24,12 +50,12 @@ export default async function handler(req, res) {
       req.headers["x-file-name"] ||
       `hochzeit-${Date.now()}.jpg`;
 
-    const response = await fetch(
+    const uploadResponse = await fetch(
       "https://content.dropboxapi.com/2/files/upload",
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.DROPBOX_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${tokenData.access_token}`,
           "Content-Type": "application/octet-stream",
           "Dropbox-API-Arg": JSON.stringify({
             path: `/Hochzeitsbilder/${Date.now()}-${fileName}`,
@@ -41,13 +67,21 @@ export default async function handler(req, res) {
       }
     );
 
-    if (!response.ok) {
-      const text = await response.text();
-      return res.status(500).json({ error: text });
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+
+      return res.status(500).json({
+        error: errorText
+      });
     }
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({
+      success: true
+    });
+
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      error: err.message
+    });
   }
 }
