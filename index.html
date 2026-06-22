@@ -17,7 +17,56 @@ body{
 #phone{
   width:100%;
   min-height:100vh;
-  background:#f
+  background:#f5f0e8;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.notch{
+  display:none;
+}
+
+#env-scene{
+  width:100%;
+  min-height:100vh;
+  height:100vh;
+}
+
+#inv-page{
+  width:100%;
+  min-height:100vh;
+}
+
+.inv-content{
+  max-width:720px;
+  margin:0 auto;
+  width:100%;
+}
+
+.flower-hero{
+  height:420px;
+}
+
+@media(max-width:600px){
+  .flower-hero{
+    height:260px;
+  }
+
+  .couple-names{
+    font-size:48px;
+  }
+
+  .date-day{
+    font-size:64px;
+  }
+
+  .inv-content{
+    padding:0 22px;
+  }
+}
 
 
 /* ENVELOPE */
