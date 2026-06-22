@@ -13,7 +13,23 @@ export default async function handler(req, res) {
 
   try {
     // Neuen Access Token über Refresh Token holen
-    const tokenResponse = await fetch(
+   if (!process.env.DROPBOX_REFRESH_TOKEN) {
+  return res.status(500).json({
+    error: "DROPBOX_REFRESH_TOKEN fehlt in Vercel"
+  });
+}
+
+if (!process.env.DROPBOX_APP_KEY) {
+  return res.status(500).json({
+    error: "DROPBOX_APP_KEY fehlt in Vercel"
+  });
+}
+
+if (!process.env.DROPBOX_APP_SECRET) {
+  return res.status(500).json({
+    error: "DROPBOX_APP_SECRET fehlt in Vercel"
+  });
+}
       "https://api.dropboxapi.com/oauth2/token",
       {
         method: "POST",
